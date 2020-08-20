@@ -1,0 +1,18 @@
+.Container {
+    width: 50%;
+    margin:auto;
+    height: 800px;
+    overflow-y: auto;
+    float:left;
+    
+}
+
+.PackageListContainer {
+    width:50%;
+    float:left;
+}
+
+.PackageInfoContainer {
+    width:50%;
+    float:left;
+}  
