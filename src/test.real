@@ -1,0 +1,26 @@
+Package: libxinerama1
+Status: install ok installed
+Multi-Arch: same
+Priority: optional
+Section: libs
+Installed-Size: 56
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Source: libxinerama
+Version: 2:1.1.1-3build1
+Depends: libc6 (>= 2.2.5), libx11-6 (>= 2:1.4.99.1), libxext6
+Pre-Depends: multiarch-support
+Description: X11 Xinerama extension library
+ libXinerama provides an X Window System client interface to the XINERAMA
+ extension to the X protocol.
+ .
+ The Xinerama (also known as panoramiX) extension allows for multiple screens
+ attached to a single display to be treated as belonging together, and to give
+ desktop applications a better idea of the monitor layout.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXinerama
+Original-Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
