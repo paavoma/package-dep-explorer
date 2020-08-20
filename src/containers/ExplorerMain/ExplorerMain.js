@@ -3,7 +3,7 @@ import Aux from '../../hoc/Auxil';
 import InputForm from '../../components/InputForm/InputForm'
 
 
-class App extends Component {
+class ExplorerMain extends Component {
 
 
   render() {
@@ -17,4 +17,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default ExplorerMain;

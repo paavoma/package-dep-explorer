@@ -1,39 +1,71 @@
-import React from 'react';
+import React,{Component} from 'react';
 
 import Aux from '../../hoc/Auxil';
 import classes from './UI.module.css';
+import PackageInfo from './PackageInfo/PackageInfo';
 
-const ui = (props) => (
-    <Aux>
-        <div className={classes.Container}>
-            <div className={classes.PackageListContainer}>
-                <ul>
+class Ui extends Component {
+    constructor(props)
+    {
+        super(props);
+        this.state = {
+            shownPackageName: "",
+            shownPackageDescription: "",
+            shownPackageDependencies: [],
+            shownPackageRevDependencies: []
+        }
+        this.liClicked = this.handleLiClick.bind(this);
+    }
 
-                    {
-                        props.packList.map((pack, index) => {
-                            return <li key={index}>{pack.name}</li>
+    handleLiClick = (event) => {
+        const key = event.currentTarget.id;
+        console.log(key);
+
+        this.setState({
+            shownPackageName: this.props.packList[key].name, 
+            shownPackageDescription: this.props.packList[key].description,
+            shownPackageDependencies: this.props.packList[key].dependencies,
+            shownPackageRevDependencies: this.props.packList[key].revDependencies
+        });
+    };
+
+    
+
+
+    render() {
+        return(
+            <Aux>
+            <div className={classes.Container}>
+                <div className={classes.PackageListContainer}>
+                    <ul>
+
+                        {
+                            this.props.packList.map((pack, index) => {
+                                return <li id={pack.id} key={index} onClick={this.liClicked}>{pack.name}</li>
+                            }
+                            )
                         }
-                        )
-                    }
 
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div className={classes.Container}>
-            <div className={classes.PackageInfoContainer}>
-                <ul>
+            <div className={classes.Container}>
+                <div className={classes.PackageInfoContainer}>
 
-                    {
-                        props.packList.map((pack, index) => {
-                            return <li key={index}>{pack.description}</li>
-                        }
-                        )
-                    }
 
-                </ul>
+                    <PackageInfo
+                        shownPackageName={this.state.shownPackageName}
+                        shownPackageDescription={this.state.shownPackageDescription}
+                        shownPackageDependencies={this.state.shownPackageDependencies}
+                        shownPackageRevDependencies={this.state.shownPackageRevDependencies}></PackageInfo>
+
+
+                </div>
             </div>
-        </div>
-    </Aux>
-);
+        </Aux>
+        );
+        
+    };
+};
 
-export default ui;
+export default Ui;

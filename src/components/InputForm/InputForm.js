@@ -167,12 +167,14 @@ handleFileRead = (e) => {
                 }
                 packageArrayIndex++;
                 packageJSON = {
+                    id:null,
                     name: "",
                     dependencies: [],
                     revDependencies: [],
                     description: ""
                 };
                 packageJSON.name = result.token[index];
+                packageJSON.id = packageArrayIndex;
             } else if (element === packageDependency) {
                 packageJSON.dependencies.push(result.token[index]);
             } else if (element === packageDescription) {
