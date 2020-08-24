@@ -13,17 +13,27 @@ class Ui extends Component {
             shownPackageDependancyLinkIndex: [],
             shownPackageRevDependencies: [],
             shownPackageRevDependancyLinkIndex: [],
+            shownPackageNotes: "",
             currentlySelectedElementIndex: []
         }
         this.liClicked = this.handleLiClick.bind(this);
+        this.textAreaChanged = this.handleTextAreaChange.bind(this);
 
     }
 
+    handleTextAreaChange = (event) => {
+        
+            this.setState({
+                shownPackageNotes: event.target.value
+            });
+            this.props.packList[event.currentTarget.id].notes = event.target.value;
+        console.log(this.state.shownPackageNotes);
 
+    };
 
     handleLiClick = (event) => {
         const key = event.currentTarget.id;
-        
+        //reset previously selected package highlight
         let elmnt = document.getElementById(this.state.currentlySelectedElementIndex);
         if(elmnt !== null){
             elmnt.style.backgroundColor="";
@@ -37,6 +47,7 @@ class Ui extends Component {
             shownPackageDependancyLinkIndex: this.props.packList[key].dependencyLinkIndex,
             shownPackageRevDependencies: this.props.packList[key].revDependencies,
             shownPackageRevDependancyLinkIndex: this.props.packList[key].revDependencyLinkIndex,
+            shownPackageNotes: this.props.packList[key].notes,
             currentlySelectedElementIndex: key
         });
     
@@ -44,6 +55,8 @@ class Ui extends Component {
         elmnt.scrollIntoView({behavior: "smooth", block: "center"});
         elmnt.focus();
         elmnt.style.backgroundColor="lightgray";
+        //Save notes to local storage, so it can be viewed again.
+        localStorage.setItem('data', JSON.stringify(this.props.packList));
     };
 
     getAlternateVersionsSuffix(packageNameToLink, packageNameWithAltVersions) {
@@ -63,6 +76,7 @@ class Ui extends Component {
     }
 
     render() {
+        
         return (
             <Aux>
                 <div className={classes.UiContainer}>
@@ -127,6 +141,12 @@ class Ui extends Component {
                                     )
                                 }
                             </ul>
+                            <p>Notes: </p>
+                            <textarea id={this.state.currentlySelectedElementIndex} 
+                                    value={this.state.shownPackageNotes} 
+                                    onChange={this.textAreaChanged}
+                                    rows="4" 
+                                    cols="50"></textarea>
                         </div>
                     </div>
                 </div>

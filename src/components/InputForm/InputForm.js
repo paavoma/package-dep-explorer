@@ -173,6 +173,7 @@ handleFileRead = (e) => {
                     dependencyLinkIndex: [],
                     revDependencies: [],
                     revDependencyLinkIndex: [],
+                    notes: "",
                     description: ""
                     
                 };
@@ -220,9 +221,7 @@ handleFileRead = (e) => {
             let x = 0
                 for (x = 0; x < dependency.length; x++){
                     if(dependency[x] === "|"){
-                        console.log("Pipe char löydetty");
                         dependencyName.pop();
-                        console.log("Typistetty package hakunimi:" + dependencyName);
                         break;
                     }else{
                         dependencyName = dependencyName.concat(dependency[x]);
@@ -253,6 +252,7 @@ handleFileRead = (e) => {
                 dependencyIndex++;
             });
             dependencyIndex = 0;
+
             //check revDependencies
             pack.revDependencies.forEach(dependency => {
                 
@@ -283,12 +283,21 @@ handleFileRead = (e) => {
 
 
 handleFileChosen = (file) => {
-    this.fileReader = new FileReader();
-    this.fileReader.onloadend = this.handleFileRead;
-    this.fileReader.readAsText(file);
+    const data = JSON.parse(localStorage.getItem('data'));
+    if(data !== null){
+        console.log("Local storage data found");
+        this.setState({ finalPackageList : data});
+        localStorage.clear();
+    }else{
+        this.fileReader = new FileReader();
+        this.fileReader.onloadend = this.handleFileRead;
+        this.fileReader.readAsText(file);
+    }
+    
     this.setState({
         isFileLoaded: true
     });
+    
 };
 
 drawUI(){
