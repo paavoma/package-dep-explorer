@@ -1,18 +1,35 @@
-.Container {
-    width: 50%;
+.UiContainer {
+    width: 80%;
+    margin: auto;
+}
+
+
+
+
+
+.PackageListContainer {
+    width: 30%;
     margin:auto;
     height: 800px;
     overflow-y: auto;
     float:left;
-    
-}
-
-.PackageListContainer {
-    width:50%;
-    float:left;
 }
 
 .PackageInfoContainer {
-    width:50%;
+    width: 70%;
+    margin:auto;
+    height: 800px;
+    overflow-y: auto;
     float:left;
-}  
+} 
+
+a {
+    cursor: pointer;
+    color: blue;
+}
+a:focus {
+    background-color: yellow;
+}
+a:hover{
+    background-color: lightgray;
+}

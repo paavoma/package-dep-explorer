@@ -170,13 +170,17 @@ handleFileRead = (e) => {
                     id:null,
                     name: "",
                     dependencies: [],
+                    dependencyLinkIndex: [],
                     revDependencies: [],
+                    revDependencyLinkIndex: [],
                     description: ""
+                    
                 };
                 packageJSON.name = result.token[index];
                 packageJSON.id = packageArrayIndex;
             } else if (element === packageDependency) {
                 packageJSON.dependencies.push(result.token[index]);
+                packageJSON.dependencyLinkIndex.push(null);
             } else if (element === packageDescription) {
                 packageJSON.description = result.token[index];
             }
@@ -197,21 +201,82 @@ handleFileRead = (e) => {
             packagesArray.forEach(packageToSearch => {
                 let packNameToSearch = packageToSearch.name;
                 packageToSearch.dependencies.forEach(dependencyName => {
-                    if (packageName === dependencyName)
+                    if (packageName === dependencyName){
                         pack.revDependencies.push(packNameToSearch);
+                        pack.revDependencyLinkIndex.push(null);
+                    }
                 });
             });
             finalPackagesArray.push(pack);
         });
         return finalPackagesArray;
+    };
+
+    const buildDependencyIndexLinks = (packagesArray) => {
+        let packagesArrayToIterate = packagesArray;
+        
+        const removeAltVersions = (dependency) => {
+            let dependencyName = [];
+            let x = 0
+                for (x = 0; x < dependency.length; x++){
+                    if(dependency[x] === "|"){
+                        console.log("Pipe char löydetty");
+                        dependencyName.pop();
+                        console.log("Typistetty package hakunimi:" + dependencyName);
+                        break;
+                    }else{
+                        dependencyName = dependencyName.concat(dependency[x]);
+                    }
+
+                };
+                dependencyName= dependencyName.join('');
+                
+                return dependencyName;
+        };
+
+        packagesArrayToIterate.forEach(packageToIterate => {
+            let pack = packageToIterate;
+            let dependencyIndex = 0;
+
+            //check dependencies
+            pack.dependencies.forEach(dependency => {
+                let dependencyName = "";
+                
+                dependencyName = removeAltVersions(dependency);
+                packagesArrayToIterate.forEach(packageToCompare => {
+                    let packageName = packageToCompare.name;
+                    if(packageName === dependencyName){
+                        
+                        packagesArrayToIterate[pack.id].dependencyLinkIndex[dependencyIndex] = packageToCompare.id;
+                    };
+                });
+                dependencyIndex++;
+            });
+            dependencyIndex = 0;
+            //check revDependencies
+            pack.revDependencies.forEach(dependency => {
+                
+                let dependencyName = "";
+                dependencyName = removeAltVersions(dependency);
+                packagesArrayToIterate.forEach(packageToCompare => {
+                    let packageName = packageToCompare.name;
+                    if(packageName === dependencyName){
+                        
+                        packagesArrayToIterate[pack.id].revDependencyLinkIndex[dependencyIndex] = packageToCompare.id;
+                    };
+                });
+                dependencyIndex++;
+            });
+
+        });
+        return packagesArrayToIterate;
     }
-
-
 
     var result = textParser(content);
     var finalPackages = buildPackagesArray(result);
     var finalPackagesWithRevDependencies = buildReverseDependencies(finalPackages);
-    this.setState({ finalPackageList : finalPackagesWithRevDependencies});
+    var finalPackagesWithLinks = buildDependencyIndexLinks(finalPackagesWithRevDependencies);
+    this.setState({ finalPackageList : finalPackagesWithLinks});
     console.log(this.state.finalPackageList);
 
 };
