@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import Aux from '../../hoc/Auxil';
 import classes from './UI.module.css';
 
@@ -80,15 +79,14 @@ class Ui extends Component {
     };
 
     getAlternateVersionsSuffix(packageNameToLink, packageNameWithAltVersions) {
-        let packNameToLink = "";
-        let packNameWithAltVersions = "";
-        packNameToLink = packageNameToLink;
-        packNameWithAltVersions = packageNameWithAltVersions;
+        
+        let packNameToLink = packageNameToLink;
+        let packNameWithAltVersions = packageNameWithAltVersions;
         let finalPackageNameSuffix = "";
 
-        if (packageNameToLink !== packageNameWithAltVersions) {
-            let len = packageNameToLink.length;
-            finalPackageNameSuffix = packageNameWithAltVersions.substring(len);
+        if (packNameToLink !== packNameWithAltVersions) {
+            let len = packNameToLink.length;
+            finalPackageNameSuffix = packNameWithAltVersions.substring(len);
             return finalPackageNameSuffix;
         } else {
             return "";
@@ -109,10 +107,12 @@ class Ui extends Component {
                                 this.state.shownPackageDependencies.map((dependency, index) => {
                                     if (this.state.shownPackageDependancyLinkIndex[index] !== null) {
                                         return <li key={index} >
-                                            <a onClick={this.liClicked}
+                                            <button  onClick={this.liClicked}
+                                                type="button"
+                                                className={classes.LinkButton}
                                                 id={this.state.shownPackageDependancyLinkIndex[index]}>
                                                 {this.props.packList[this.state.shownPackageDependancyLinkIndex[index]].name}
-                                            </a>
+                                            </button>
                                             {this.getAlternateVersionsSuffix(this.props.packList[this.state.shownPackageDependancyLinkIndex[index]].name, dependency)}
                                         </li>
                                     }
@@ -131,10 +131,12 @@ class Ui extends Component {
                                 this.state.shownPackageRevDependencies.map((dependency, index) => {
                                     if (this.state.shownPackageRevDependancyLinkIndex[index] !== null) {
                                         return <li key={index} >
-                                            <a onClick={this.liClicked}
+                                            <button onClick={this.liClicked}
+                                                type="button"
+                                                className={classes.LinkButton}
                                                 id={this.state.shownPackageRevDependancyLinkIndex[index]}>
                                                 {this.props.packList[this.state.shownPackageRevDependancyLinkIndex[index]].name}
-                                            </a>
+                                            </button>
                                             {this.getAlternateVersionsSuffix(this.props.packList[this.state.shownPackageRevDependancyLinkIndex[index]].name, dependency)}
                                         </li>
                                     } else {
@@ -176,7 +178,10 @@ class Ui extends Component {
                                     this.props.packList.map((pack, index) => {
                                         return <li key={index}
                                             tabIndex='-1'>
-                                            <a id={pack.id} onClick={this.liClicked}>{pack.name}</a>
+                                            <button id={pack.id} 
+                                                onClick={this.liClicked}
+                                                type="button"
+                                                className={classes.LinkButton}>{pack.name}</button>
                                         </li>
                                     }
                                     )

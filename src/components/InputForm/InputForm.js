@@ -330,7 +330,7 @@ class InputForm extends Component {
                 <div className={classes.WindowContainer}>
                     <div className={classes.InputButtonContainer}>
                         <div>
-                            <h1>Please select a file: </h1>
+                            <h1>Please select /var/lib/dpkg/status.real file: </h1>
                             <input
                                 type='file'
                                 id='file'
