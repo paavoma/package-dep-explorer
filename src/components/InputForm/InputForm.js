@@ -5,8 +5,7 @@ import classes from './InputForm.module.css';
 class InputForm extends Component {
     constructor(props) {
         super(props);
-        let fileReader;
-
+        
         this.state = {
             isFileLoaded: false,
             finalPackageList: []
@@ -16,6 +15,12 @@ class InputForm extends Component {
     }
 
     componentDidMount() {
+        
+        this.loadSessionFromLocalStorage();
+        
+    }
+
+    loadSessionFromLocalStorage() {
         let packageListFromLocalStorage = null;
         packageListFromLocalStorage = JSON.parse(localStorage.getItem('data'));
 
@@ -25,19 +30,20 @@ class InputForm extends Component {
                 isFileLoaded: true
             });
         }
-        
     }
 
+    /*
+    * Parser Logic STARTS
+    */
 
-    handleFileRead = (e) => {
-        //package token names
+    parseFile = (e) => {
+        //package type names
         const packageName = "package-name";
         const packageDependency = "package-dependency";
         const packageDescription = "package-description";
         const content = this.fileReader.result;
 
-
-
+        //Parser results are put into type-value pairs
         const textParser = function (options) {
             var token = [],
                 types = [],
@@ -277,29 +283,26 @@ class InputForm extends Component {
                 //check revDependencies
                 checkDependenciesForIndexLink(pack.revDependencies, true);
 
-                
-
             });
             return packagesArrayToIterate;
         }
 
-        var result = textParser(content);
-        var finalPackages = buildPackagesArray(result);
-        var finalPackagesWithRevDependencies = buildReverseDependencies(finalPackages);
-        var finalPackagesWithLinks = buildDependencyIndexLinks(finalPackagesWithRevDependencies);
+        const result = textParser(content);
+        const finalPackages = buildPackagesArray(result);
+        const finalPackagesWithRevDependencies = buildReverseDependencies(finalPackages);
+        const finalPackagesWithLinks = buildDependencyIndexLinks(finalPackagesWithRevDependencies);
         this.setState({ finalPackageList: finalPackagesWithLinks });
-        console.log(this.state.finalPackageList);
-
     };
 
+    /*
+    * Parser Logic ENDS
+    */
 
     handleFileChosen = (file) => {
 
         this.fileReader = new FileReader();
-        this.fileReader.onloadend = this.handleFileRead;
+        this.fileReader.onloadend = this.parseFile;
         this.fileReader.readAsText(file);
-
-
         this.setState({
             isFileLoaded: true
         });
@@ -307,8 +310,6 @@ class InputForm extends Component {
     };
 
     handleClearLocalStorage() {
-        console.log("delete local storage");
-        clearInterval(this.interval);
         localStorage.clear();
         this.setState({
             isFileLoaded: false,
@@ -338,8 +339,6 @@ class InputForm extends Component {
                                 onChange={e => this.handleFileChosen(e.target.files[0])}
                             />
                         </div>
-
-
                     </div>
                 </div>
             )
@@ -349,7 +348,6 @@ class InputForm extends Component {
     render() {
         return (
 
-
             <div>
                 {this.drawPackageInfoUI()}
                 {this.drawInputButton()}
@@ -358,8 +356,6 @@ class InputForm extends Component {
                 </div>
                 
             </div>
-            
-                
             
         );
     }

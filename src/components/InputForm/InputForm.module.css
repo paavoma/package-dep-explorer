@@ -12,6 +12,14 @@
     
     
 }
+
+@media only screen and (max-width: 600px) {
+    .WindowContainer{
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+}
 .InputButtonContainer {
     height:100%;
     display: flex;

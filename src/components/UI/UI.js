@@ -48,6 +48,7 @@ class Ui extends Component {
 
     handleLiClick = (event) => {
         const key = event.currentTarget.id;
+
         //reset previously selected package highlight
         let elmnt = document.getElementById(this.state.currentlySelectedElementIndex);
         if (elmnt !== null) {
@@ -76,7 +77,7 @@ class Ui extends Component {
             currentlySelectedElementIndex: key,
             isPackageLoaded: true
         });
-    }
+    };
 
     getAlternateVersionsSuffix(packageNameToLink, packageNameWithAltVersions) {
         let packNameToLink = "";
@@ -162,11 +163,6 @@ class Ui extends Component {
         }
 
     };
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-        
-      }
 
     render() {
 
