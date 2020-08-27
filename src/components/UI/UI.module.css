@@ -1,35 +1,73 @@
+body {
+    font-size:14px;
+    background-color: lightgray;
+  }
 .UiContainer {
+    margin-top: 20px;
     width: 80%;
     margin: auto;
+    height: 600px;
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: darkgray;
+    margin-top: 50px;
+    
 }
-
-
-
+@media only screen and (max-width: 600px) {
+    .UiContainer{
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+}
 
 
 .PackageListContainer {
     width: 30%;
     margin:auto;
-    height: 800px;
+    height: 600px;
     overflow-y: auto;
     float:left;
+    background-color: white;
+    
 }
 
 .PackageInfoContainer {
     width: 70%;
     margin:auto;
-    height: 800px;
+    height: 600px;
     overflow-y: auto;
     float:left;
-} 
+    background-color: white;
+    
+}
+.PackageInfoContent  {
+    margin: 10px;
+}
+.PackageListContent {
+    margin-right: 15px;
+}
+.DefaultPackageContent {
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 a {
     cursor: pointer;
     color: blue;
 }
-a:focus {
-    background-color: yellow;
-}
 a:hover{
     background-color: lightgray;
 }
+textarea {
+    -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 75%;
+    width: 75%;
+}
+
+
+

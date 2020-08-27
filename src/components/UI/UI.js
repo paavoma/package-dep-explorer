@@ -14,32 +14,57 @@ class Ui extends Component {
             shownPackageRevDependencies: [],
             shownPackageRevDependancyLinkIndex: [],
             shownPackageNotes: "",
-            currentlySelectedElementIndex: []
+            currentlySelectedElementIndex: [],
+            isPackageLoaded: false,
+            prevSavedPackageList: []
         }
         this.liClicked = this.handleLiClick.bind(this);
         this.textAreaChanged = this.handleTextAreaChange.bind(this);
+        
 
+    };
+
+    componentDidMount(){
+        //saves packagelist to local storage every 5 seconds
+        const interval = setInterval(() => {
+            this.saveToLocalStorage();
+        }, 5000);
     }
 
-    handleTextAreaChange = (event) => {
+    saveToLocalStorage(){
         
-            this.setState({
-                shownPackageNotes: event.target.value
-            });
-            this.props.packList[event.currentTarget.id].notes = event.target.value;
-        console.log(this.state.shownPackageNotes);
+        const packList = this.props.packList;
+        localStorage.setItem('data', JSON.stringify(packList));
+         
+    };
+    //saves notes changes to packagelist
+    handleTextAreaChange = (event) => {
 
+        this.setState({
+            shownPackageNotes: event.target.value
+        });
+        this.props.packList[event.currentTarget.id].notes = event.target.value;
     };
 
     handleLiClick = (event) => {
         const key = event.currentTarget.id;
         //reset previously selected package highlight
         let elmnt = document.getElementById(this.state.currentlySelectedElementIndex);
-        if(elmnt !== null){
-            elmnt.style.backgroundColor="";
+        if (elmnt !== null) {
+            elmnt.style.backgroundColor = "";
         }
-        
 
+        this.updateShownPackageState(key);
+
+        //highlight clicked li and scroll to it
+        elmnt = document.getElementById(key);
+        elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+        elmnt.focus();
+        elmnt.style.backgroundColor = "lightgray";
+        
+    };
+
+    updateShownPackageState(key) {
         this.setState({
             shownPackageName: this.props.packList[key].name,
             shownPackageDescription: this.props.packList[key].description,
@@ -48,16 +73,10 @@ class Ui extends Component {
             shownPackageRevDependencies: this.props.packList[key].revDependencies,
             shownPackageRevDependancyLinkIndex: this.props.packList[key].revDependencyLinkIndex,
             shownPackageNotes: this.props.packList[key].notes,
-            currentlySelectedElementIndex: key
+            currentlySelectedElementIndex: key,
+            isPackageLoaded: true
         });
-    
-        elmnt = document.getElementById(key);
-        elmnt.scrollIntoView({behavior: "smooth", block: "center"});
-        elmnt.focus();
-        elmnt.style.backgroundColor="lightgray";
-        //Save notes to local storage, so it can be viewed again.
-        localStorage.setItem('data', JSON.stringify(this.props.packList));
-    };
+    }
 
     getAlternateVersionsSuffix(packageNameToLink, packageNameWithAltVersions) {
         let packNameToLink = "";
@@ -73,81 +92,105 @@ class Ui extends Component {
         } else {
             return "";
         }
-    }
+    };
+
+    renderShownPackage() {
+        if (this.state.isPackageLoaded === true) {
+            return (
+                
+                    <div className={classes.PackageInfoContent}>
+                        <h1>{this.state.shownPackageName}</h1>
+                        <p>{this.state.shownPackageDescription}</p>
+                        <hr></hr>
+                        <h3>Dependencies:</h3>
+                        <ul>
+                            {
+                                this.state.shownPackageDependencies.map((dependency, index) => {
+                                    if (this.state.shownPackageDependancyLinkIndex[index] !== null) {
+                                        return <li key={index} >
+                                            <a onClick={this.liClicked}
+                                                id={this.state.shownPackageDependancyLinkIndex[index]}>
+                                                {this.props.packList[this.state.shownPackageDependancyLinkIndex[index]].name}
+                                            </a>
+                                            {this.getAlternateVersionsSuffix(this.props.packList[this.state.shownPackageDependancyLinkIndex[index]].name, dependency)}
+                                        </li>
+                                    }
+
+                                    else {
+                                        return <li key={index}>{dependency}</li>
+                                    };
+
+                                }
+                                )
+                            }
+                        </ul>
+                        <h3>Reverse dependencies:</h3>
+                        <ul>
+                            {
+                                this.state.shownPackageRevDependencies.map((dependency, index) => {
+                                    if (this.state.shownPackageRevDependancyLinkIndex[index] !== null) {
+                                        return <li key={index} >
+                                            <a onClick={this.liClicked}
+                                                id={this.state.shownPackageRevDependancyLinkIndex[index]}>
+                                                {this.props.packList[this.state.shownPackageRevDependancyLinkIndex[index]].name}
+                                            </a>
+                                            {this.getAlternateVersionsSuffix(this.props.packList[this.state.shownPackageRevDependancyLinkIndex[index]].name, dependency)}
+                                        </li>
+                                    } else {
+                                        return <li key={index}>{dependency}</li>
+                                    }
+                                }
+                                )
+                            }
+                        </ul>
+                        <hr></hr>
+                        <p>Notes: </p>
+                        <textarea id={this.state.currentlySelectedElementIndex}
+                            value={this.state.shownPackageNotes}
+                            onChange={this.textAreaChanged}
+                            rows="4"></textarea>
+                    </div>
+                    
+            );
+
+        } else {
+            return (
+                <div className={classes.DefaultPackageContent}>
+                    <h1>Please select a package</h1>
+                </div>
+            );
+        }
+
+    };
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+        
+      }
 
     render() {
-        
+
         return (
             <Aux>
                 <div className={classes.UiContainer}>
                     <div className={classes.PackageListContainer}>
-                        <div >
+                        <div className={classes.PackageListContent}>
                             <ul>
                                 {
                                     this.props.packList.map((pack, index) => {
                                         return <li key={index}
-                                                    tabIndex='-1'>
-                                            <a id={pack.id}
-                                                onClick={this.liClicked}>{pack.name}</a>
+                                            tabIndex='-1'>
+                                            <a id={pack.id} onClick={this.liClicked}>{pack.name}</a>
                                         </li>
                                     }
                                     )
                                 }
                             </ul>
                         </div>
+
                     </div>
-                    <div className={classes.PackageInfoContainer}>
-                        <div>
-                            <h1>{this.state.shownPackageName}</h1>
-                            <p>{this.state.shownPackageDescription}</p>
-                            <p>Dependencies:</p>
-                            <ul>
-                                {
-                                    this.state.shownPackageDependencies.map((dependency, index) => {
-                                        if (this.state.shownPackageDependancyLinkIndex[index] !== null) {
-                                            return <li key={index} >
-                                                <a onClick={this.liClicked}
-                                                    id={this.state.shownPackageDependancyLinkIndex[index]}>
-                                                    {this.props.packList[this.state.shownPackageDependancyLinkIndex[index]].name}
-                                                </a>
-                                                {this.getAlternateVersionsSuffix(this.props.packList[this.state.shownPackageDependancyLinkIndex[index]].name, dependency)}
-                                            </li>
-                                        }
-
-                                        else {
-                                            return <li key={index}>{dependency}</li>
-                                        };
-
-                                    }
-                                    )
-                                }
-                            </ul>
-                            <p>Reverse dependencies:</p>
-                            <ul>
-                                {
-                                    this.state.shownPackageRevDependencies.map((dependency, index) => {
-                                        if (this.state.shownPackageRevDependancyLinkIndex[index] !== null) {
-                                            return <li key={index} >
-                                                <a onClick={this.liClicked}
-                                                    id={this.state.shownPackageRevDependancyLinkIndex[index]}>
-                                                    {this.props.packList[this.state.shownPackageRevDependancyLinkIndex[index]].name}
-                                                </a>
-                                                {this.getAlternateVersionsSuffix(this.props.packList[this.state.shownPackageRevDependancyLinkIndex[index]].name, dependency)}
-                                            </li>
-                                        } else {
-                                            return <li key={index}>{dependency}</li>
-                                        }
-                                    }
-                                    )
-                                }
-                            </ul>
-                            <p>Notes: </p>
-                            <textarea id={this.state.currentlySelectedElementIndex} 
-                                    value={this.state.shownPackageNotes} 
-                                    onChange={this.textAreaChanged}
-                                    rows="4" 
-                                    cols="50"></textarea>
-                        </div>
+                    <div className={classes.PackageInfoContainer}>           
+                        {this.renderShownPackage()}
                     </div>
                 </div>
             </Aux>
