@@ -9,6 +9,8 @@ Since JavaScript doesn't allow to probe local filesystem, user must provide the 
 - Session data persists through refresh or reboot, it uses local storage. A local storage button was created for testing convinience.
 - Ui is usable on mobile as well but since it requires to input files, it is redundant atm, but it can be used for future iterations on mobile as well.
 
+Link to Heroku deployment: https://package-dep-explorer.herokuapp.com/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
