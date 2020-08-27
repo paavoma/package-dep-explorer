@@ -1,3 +1,14 @@
+### About the app
+This is a React app that exposes some key information about packages in the file /var/lib/dpkg/status.real in Debian or Ubuntu via an HTML interface.
+
+Since JavaScript doesn't allow to probe local filesystem, user must provide the file manually.
+
+### Features:
+- Packages can be browsed via clicking the name, or available dependencies.
+- User can write notes on individual packages, which are saved.
+- Session data persists through refresh or reboot, it uses local storage. A local storage button was created for testing convinience.
+- Ui is usable on mobile as well but since it requires to input files, it is redundant atm, but it can be used for future iterations on mobile as well.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
