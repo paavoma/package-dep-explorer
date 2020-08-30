@@ -11,6 +11,13 @@ Since JavaScript doesn't allow to probe local filesystem, user must provide the 
 
 Link to Heroku deployment: https://package-dep-explorer.herokuapp.com/
 
+### Installing and running project locally
+- git clone https://github.com/paavoma/package-dep-explorer.git
+- cd package-dep-explorer
+- git checkout devlocal
+- npm install
+- npm start
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
