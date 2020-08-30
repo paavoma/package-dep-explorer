@@ -60,9 +60,11 @@ class InputForm extends Component {
                             for (b = a + 1; b <= len; b += 1) {
                                 name.push(data[b]);
                                 if (
-                                    data[b + 2] === "\n"  && data[b + 1] === "\s") {
+                                    data[b + 2] === "\n"  && data[b + 1] !== "\s") {
                                     break;
                                 } else if (data[b+2] === "\n"){
+                                    break;
+                                } else if (data[b+1] === "\n"){
                                     break;
                                 }
                             }
