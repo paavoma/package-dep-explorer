@@ -9,6 +9,7 @@ class InputForm extends Component {
 
         this.state = {
             isFileLoaded: false,
+            isFileLoading: false,
             finalPackageList: []
         }
         this.clearStorageButtonClicked = this.handleClearLocalStorage.bind(this);
@@ -294,15 +295,18 @@ class InputForm extends Component {
 
             return packagesArrayToIterate;
         }
-
+        this.setState({
+            isFileLoading: true
+        });
         const result = textParser(content);
         const finalPackages = buildPackagesArray(result);
         const finalPackagesWithRevDependencies = buildReverseDependencies(finalPackages);
         const finalPackagesWithLinks = buildDependencyIndexLinks(finalPackagesWithRevDependencies);
         this.setState({ 
             finalPackageList: finalPackagesWithLinks,
-            isFileLoaded: true
-            });
+            isFileLoaded: true,
+            isFileLoading: false
+        });
         
     };
 
@@ -335,12 +339,12 @@ class InputForm extends Component {
     drawInputButton() {
         if (this.state.isFileLoaded) {
             return;
-        } else {
+        } else if(this.state.isFileLoaded === false && this.state.isFileLoading == false) {
             return (
                 <div className={classes.WindowContainer}>
                     <div className={classes.InputButtonContainer}>
                         <div>
-                            <h1>Please select /var/lib/dpkg/status.real file: </h1>
+                            <h1>Please select /var/lib/dpkg/status file: </h1>
                             <input
                                 type='file'
                                 id='file'
@@ -351,6 +355,18 @@ class InputForm extends Component {
                     </div>
                 </div>
             )
+        }else if(this.state.isFileLoaded === false && this.state.isFileLoading == true){
+            console.log("täällä on käyty");
+            return(
+            <div className={classes.WindowContainer}>
+                <div className={classes.InputButtonContainer}>
+                    <div>
+                        <h1>LOADING...</h1>
+                    </div>
+                </div>
+            </div>
+            )
+            
         }
     }
 
