@@ -61,7 +61,6 @@ class InputForm extends Component {
                                 name.push(data[b]);
                                 if (
                                     data[b + 1] === "\n") {
-                                        console.log("plus not whitespace käyty")
                                     break;
                                 }
                             }
@@ -300,7 +299,11 @@ class InputForm extends Component {
         const finalPackages = buildPackagesArray(result);
         const finalPackagesWithRevDependencies = buildReverseDependencies(finalPackages);
         const finalPackagesWithLinks = buildDependencyIndexLinks(finalPackagesWithRevDependencies);
-        this.setState({ finalPackageList: finalPackagesWithLinks });
+        this.setState({ 
+            finalPackageList: finalPackagesWithLinks,
+            isFileLoaded: true
+            });
+        
     };
 
     /*
@@ -312,9 +315,7 @@ class InputForm extends Component {
         this.fileReader = new FileReader();
         this.fileReader.onloadend = this.parseFile;
         this.fileReader.readAsText(file);
-        this.setState({
-            isFileLoaded: true
-        });
+        
 
     };
 
