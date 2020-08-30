@@ -99,7 +99,9 @@ class InputForm extends Component {
                                     dependency.push(data[b]);
                                 }
 
-                                if (data[b + 2] === "\n" && data[b + 1] !== " " || data[b + 2] === "\n" || data[b + 1] === ",") {
+                                if ((data[b + 2] === "\n" && data[b + 1] !== " " ) || 
+                                    data[b + 2] === "\n" || 
+                                    data[b + 1] === ",") {
                                     break;
                                 }
 
@@ -295,9 +297,6 @@ class InputForm extends Component {
 
             return packagesArrayToIterate;
         }
-        this.setState({
-            isFileLoading: true
-        });
         const result = textParser(content);
         const finalPackages = buildPackagesArray(result);
         const finalPackagesWithRevDependencies = buildReverseDependencies(finalPackages);
@@ -319,13 +318,16 @@ class InputForm extends Component {
         this.fileReader = new FileReader();
         this.fileReader.onloadend = this.parseFile;
         this.fileReader.readAsText(file);
-        
+        this.setState({
+            isFileLoading: true
+        })
 
     };
 
     handleClearLocalStorage() {
         localStorage.clear();
         this.setState({
+            
             isFileLoaded: false,
             finalPackageList: []
         });
@@ -333,13 +335,14 @@ class InputForm extends Component {
     }
 
     drawPackageInfoUI() {
-        if (this.state.isFileLoaded && !this.state.isFileLoading)
+         
+            if (this.state.isFileLoaded && !this.state.isFileLoading){
             return <UI packList={this.state.finalPackageList}></UI>
+        }
+            
     }
     drawInputButton() {
-        if (this.state.isFileLoaded) {
-            return;
-        } else if(this.state.isFileLoaded === false && this.state.isFileLoading == false) {
+        if(this.state.isFileLoaded === false && this.state.isFileLoading === false) {
             return (
                 <div className={classes.WindowContainer}>
                     <div className={classes.InputButtonContainer}>
@@ -355,8 +358,11 @@ class InputForm extends Component {
                     </div>
                 </div>
             )
-        }else if(this.state.isFileLoaded === false && this.state.isFileLoading == true){
-            console.log("täällä on käyty");
+        }
+    }
+    drawLoadingScreen(){
+        if(this.state.isFileLoading){
+            
             return(
             <div className={classes.WindowContainer}>
                 <div className={classes.InputButtonContainer}>
@@ -366,15 +372,14 @@ class InputForm extends Component {
                 </div>
             </div>
             )
-            
-        }
     }
-
+}
     render() {
         return (
 
             <div>
                 {this.drawPackageInfoUI()}
+                {this.drawLoadingScreen()}
                 {this.drawInputButton()}
                 <div className={classes.ClearStorageButtonContainer}>
                     <button onClick={this.clearStorageButtonClicked}>Clear local storage</button>

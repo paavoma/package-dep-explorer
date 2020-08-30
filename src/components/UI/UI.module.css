@@ -23,7 +23,7 @@ body {
 
 
 .PackageListContainer {
-    width: 30%;
+    width: 40%;
     margin:auto;
     height: 600px;
     overflow-y: auto;
@@ -33,7 +33,7 @@ body {
 }
 
 .PackageInfoContainer {
-    width: 70%;
+    width: 60%;
     margin:auto;
     height: 600px;
     overflow-y: auto;
