@@ -97,7 +97,7 @@ class InputForm extends Component {
                                     dependency.push(data[b]);
                                 }
 
-                                if (data[b + 2] === "\n" || data[b + 1] === ",") {
+                                if (data[b + 2] === "\n"  && data[data+1] === " " || data[data+1] === "\n" || data[b + 1] === ",") {
                                     break;
                                 }
 
