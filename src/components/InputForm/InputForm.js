@@ -60,7 +60,7 @@ class InputForm extends Component {
                             for (b = a + 1; b <= len; b += 1) {
                                 name.push(data[b]);
                                 if (
-                                    data[b + 2] === "\n") {
+                                    data[b + 1] === "\n" || data[b + 1] === " ") {
                                     break;
                                 }
                             }
@@ -341,7 +341,6 @@ class InputForm extends Component {
                                 type='file'
                                 id='file'
                                 className='input-file'
-                                accept='.real'
                                 onChange={e => this.handleFileChosen(e.target.files[0])}
                             />
                         </div>
