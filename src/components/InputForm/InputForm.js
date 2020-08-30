@@ -60,8 +60,9 @@ class InputForm extends Component {
                             for (b = a + 1; b <= len; b += 1) {
                                 name.push(data[b]);
                                 if (
-                                    data[b + 2] === "\n" && data[b + 1] === " " 
-                                    || data[b + 1] === "\n") {
+                                    data[b + 2] === "\n"  && data[b + 1] === "\s") {
+                                    break;
+                                } else if (data[b+2] === "\n"){
                                     break;
                                 }
                             }
@@ -97,7 +98,7 @@ class InputForm extends Component {
                                     dependency.push(data[b]);
                                 }
 
-                                if (data[b + 1] === ","|| data[b + 1] === "\n" || data[b + 2] === "\n"  && data[b + 1] === " " ) {
+                                if (data[b + 2] === "\n" && data[b + 1] !== " " || data[b + 2] === "\n" || data[b + 1] === ",") {
                                     break;
                                 }
 
