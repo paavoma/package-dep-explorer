@@ -60,16 +60,15 @@ class InputForm extends Component {
                             for (b = a + 1; b <= len; b += 1) {
                                 name.push(data[b]);
                                 if (
-                                    data[b + 2] === "\n"  && data[b + 1] !== "\s") {
-                                    break;
-                                } else if (data[b+2] === "\n"){
-                                    break;
-                                } else if (data[b+1] === "\n"){
+                                    data[b + 1] === "\n") {
+                                        console.log("plus not whitespace käyty")
                                     break;
                                 }
                             }
                             a = b;
-                            token.push(name.join(""));
+                            let trimmedName = name.join("");
+                            trimmedName = trimmedName.trim();
+                            token.push(trimmedName);
                             types.push(packageName);
 
                         },
