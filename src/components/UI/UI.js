@@ -84,6 +84,7 @@ class Ui extends Component {
         let packNameWithAltVersions = packageNameWithAltVersions;
         let finalPackageNameSuffix = "";
 
+        //cut the link part from the string (text before pipe character)
         if (packNameToLink !== packNameWithAltVersions) {
             let len = packNameToLink.length;
             finalPackageNameSuffix = packNameWithAltVersions.substring(len);

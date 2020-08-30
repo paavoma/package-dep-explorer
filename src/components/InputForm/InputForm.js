@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import UI from '../UI/UI';
 import classes from './InputForm.module.css';
 
+
 class InputForm extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             isFileLoaded: false,
             finalPackageList: []
@@ -15,9 +16,9 @@ class InputForm extends Component {
     }
 
     componentDidMount() {
-        
+
         this.loadSessionFromLocalStorage();
-        
+
     }
 
     loadSessionFromLocalStorage() {
@@ -37,6 +38,7 @@ class InputForm extends Component {
     */
 
     parseFile = (e) => {
+        
         //package type names
         const packageName = "package-name";
         const packageDependency = "package-dependency";
@@ -58,7 +60,7 @@ class InputForm extends Component {
                             for (b = a + 1; b <= len; b += 1) {
                                 name.push(data[b]);
                                 if (
-                                    data[b + 1] === "\n") {
+                                    data[b + 2] === "\n") {
                                     break;
                                 }
                             }
@@ -94,7 +96,7 @@ class InputForm extends Component {
                                     dependency.push(data[b]);
                                 }
 
-                                if (data[b + 1] === "\n" || data[b + 1] === ",") {
+                                if (data[b + 2] === "\n" || data[b + 1] === ",") {
                                     break;
                                 }
 
@@ -186,6 +188,7 @@ class InputForm extends Component {
                         packagesArray.push(packageJSON);
                     }
                     packageArrayIndex++;
+                    //data structure for one package
                     packageJSON = {
                         id: null,
                         name: "",
@@ -198,6 +201,7 @@ class InputForm extends Component {
 
                     };
                     packageJSON.name = result.token[index];
+                    
                     packageJSON.id = packageArrayIndex;
                 } else if (element === packageDependency) {
                     packageJSON.dependencies.push(result.token[index]);
@@ -208,6 +212,7 @@ class InputForm extends Component {
 
                 index++;
             });
+            packagesArray.push(packageJSON);
             return packagesArray;
         }
 
@@ -258,7 +263,7 @@ class InputForm extends Component {
                 let pack = packageToIterate;
                 let dependencyIndex = 0;
 
-                const checkDependenciesForIndexLink = (dependencyList, isRevDep) =>{
+                const checkDependenciesForIndexLink = (dependencyList, isRevDep) => {
                     dependencyList.forEach(dependency => {
 
                         let dependencyName = "";
@@ -266,11 +271,11 @@ class InputForm extends Component {
                         packagesArrayToIterate.forEach(packageToCompare => {
                             let packageName = packageToCompare.name;
                             if (packageName === dependencyName) {
-                                if(isRevDep)
-                                packagesArrayToIterate[pack.id].revDependencyLinkIndex[dependencyIndex] = packageToCompare.id;
+                                if (isRevDep)
+                                    packagesArrayToIterate[pack.id].revDependencyLinkIndex[dependencyIndex] = packageToCompare.id;
                                 else
-                                packagesArrayToIterate[pack.id].dependencyLinkIndex[dependencyIndex] = packageToCompare.id;
-                            };
+                                    packagesArrayToIterate[pack.id].dependencyLinkIndex[dependencyIndex] = packageToCompare.id;
+                            }
                         });
                         dependencyIndex++;
                     });
@@ -284,6 +289,7 @@ class InputForm extends Component {
                 checkDependenciesForIndexLink(pack.revDependencies, true);
 
             });
+
             return packagesArrayToIterate;
         }
 
@@ -354,9 +360,9 @@ class InputForm extends Component {
                 <div className={classes.ClearStorageButtonContainer}>
                     <button onClick={this.clearStorageButtonClicked}>Clear local storage</button>
                 </div>
-                
+
             </div>
-            
+
         );
     }
 }
