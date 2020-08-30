@@ -333,7 +333,7 @@ class InputForm extends Component {
     }
 
     drawPackageInfoUI() {
-        if (this.state.isFileLoaded)
+        if (this.state.isFileLoaded && !this.state.isFileLoading)
             return <UI packList={this.state.finalPackageList}></UI>
     }
     drawInputButton() {
