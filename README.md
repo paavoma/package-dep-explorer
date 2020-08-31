@@ -1,21 +1,22 @@
 ### About the app
-This is a React app that exposes some key information about packages in the file /var/lib/dpkg/status.real in Debian or Ubuntu via an HTML interface.
+This is a React app that exposes some key information about packages in the file /var/lib/dpkg/status in Debian or Ubuntu via an HTML interface.
 
 Since JavaScript doesn't allow to probe local filesystem, user must provide the file manually.
 
 ### Features:
 - Packages can be browsed via clicking the name, or available dependencies.
 - User can write notes on individual packages, which are saved.
-- Session data persists through refresh or reboot, it uses local storage. A local storage button was created for testing convinience.
+- Session data persists through refresh or reboot, it uses local storage. Clear local storage-button was created for testing convinience.
 - Ui is usable on mobile as well but since it requires to input files, it is redundant atm, but it can be used for future iterations on mobile as well.
+
+### Live demo
 
 Link to Heroku deployment: https://package-dep-explorer.herokuapp.com/
 
 ### Installing and running project locally
 - git clone https://github.com/paavoma/package-dep-explorer.git
 - cd package-dep-explorer
-- git checkout devlocal
-- npm install
+- npm install (make sure you have installed npm locally)
 - npm start
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
